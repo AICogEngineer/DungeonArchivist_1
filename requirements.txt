@@ -1,0 +1,9 @@
+# Week 2 - Monday Demos: TensorBoard, Autoencoders, MLPs
+# Requirements for visualization and deep learning fundamentals
+
+tensorflow>=2.10.0
+numpy>=1.21.0
+matplotlib>=3.4.0
+scikit-learn>=1.4.2
+seaborn>=0.12.2
+nltk
