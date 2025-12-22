@@ -13,6 +13,15 @@ def build_model(num_classes, embedding_dim=64):
     x = layers.GlobalAveragePooling2D()(x)
 
 
+    embedding = layers.Dense(
+        embedding_dim,
+        activation=None,
+        name="embedding"
+    )(x)
+
+    x = layers.BatchNormalization()(embedding)
+    x = layers.ReLU()(x)
+
     outputs = layers.Dense(num_classes, activation="softmax")(x)
 
     model = Model(inputs, outputs)
