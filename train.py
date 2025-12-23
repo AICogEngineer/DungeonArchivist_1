@@ -2,8 +2,10 @@ import tensorflow as tf
 from model import build_model
 from data import load_dataset
 
-X_train, y_train, class_names = load_dataset("./Dungeon_Crawler_Data")
-
+(X_train, y_train), (X_val, y_val), class_names = load_dataset(
+    "./Labeled_Dataset",
+    test_split=0.2
+)
 model = build_model(num_classes=len(class_names))
 
 model.compile(
@@ -11,10 +13,10 @@ model.compile(
     loss="sparse_categorical_crossentropy",
     metrics=["accuracy"]
 )
-
-history = model.fit(
-    X_train, y_train,
+model.fit(
+    X_train,
+    y_train,
+    validation_data=(X_val, y_val),
     batch_size=32,
-    epochs=20,
-    validation_split=0.2
+    epochs=20
 )
