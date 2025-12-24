@@ -18,5 +18,5 @@ model.fit(
     y_train,
     validation_data=(X_val, y_val),
     batch_size=32,
-    epochs=20
+    epochs=18
 )
