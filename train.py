@@ -31,7 +31,7 @@ callbacks = [
     tf.keras.callbacks.ReduceLROnPlateau(
         monitor="val_loss",
         factor=0.5,
-        patience=5,
+        patience=3,
         min_lr=1e-5,
         verbose=1
     )
@@ -42,6 +42,6 @@ model.fit(
     y_train,
     validation_data=(X_val, y_val),
     batch_size=32,
-    epochs=75,
+    epochs=50,
     callbacks=callbacks
 )

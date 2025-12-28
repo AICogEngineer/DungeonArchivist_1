@@ -15,21 +15,22 @@ def build_model(num_classes, embedding_dim=48):
     ], name="data_augmentation")(inputs)
 
     # Normalize Inputs
+    
     x = layers.Rescaling(1./255)(x)
 
-    x = layers.Conv2D(32, 3, padding="same", kernel_regularizer=regularizers.l2(1e-4), use_bias=False)(inputs)
+    x = layers.Conv2D(32, (3, 3), padding="same", kernel_regularizer=regularizers.l2(1e-4), use_bias=False)(inputs)
     x = layers.BatchNormalization()(x)
     x = layers.ReLU()(x)
-    x = layers.MaxPooling2D()(x)
+    x = layers.MaxPooling2D((2,2))(x)
 
 
-    x = layers.Conv2D(64, 3, padding="same", kernel_regularizer=regularizers.l2(1e-4), use_bias=False)(x)
+    x = layers.Conv2D(64, (3, 3), padding="same", kernel_regularizer=regularizers.l2(1e-4), use_bias=False)(x)
     x = layers.BatchNormalization()(x)
     x = layers.ReLU()(x)
-    x = layers.MaxPooling2D()(x)
+    x = layers.MaxPooling2D((2,2))(x)
 
 
-    x = layers.Conv2D(128, 3, padding="same", kernel_regularizer=regularizers.l2(1e-4), use_bias=False)(x)
+    x = layers.Conv2D(128, (3, 3), padding="same", kernel_regularizer=regularizers.l2(1e-4), use_bias=False)(x)
     x = layers.BatchNormalization()(x)
     x = layers.ReLU()(x)
 
@@ -40,8 +41,9 @@ def build_model(num_classes, embedding_dim=48):
     x = layers.Dense(embedding_dim, kernel_regularizer=regularizers.l2(1e-4), use_bias=False, name="embedding")(x)
     x = layers.BatchNormalization()(x)
     x = layers.ReLU()(x)
-    x = layers.Dropout(0.2)(x)
+    x = layers.Dropout(0.4)(x)
 
     outputs = layers.Dense(num_classes, activation="softmax")(x)
+
 
     return Model(inputs, outputs)
