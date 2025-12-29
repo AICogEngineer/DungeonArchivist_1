@@ -25,7 +25,14 @@ GUI
 
 Items
     got rid of artefacts folder
-    transferred rods, staffs, and wands into one folder
+    organized all weapons
+
+Monster
+    organized into folders
+
+Player
+    removed enchantments
+    removed mutations
 
             
     

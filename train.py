@@ -18,7 +18,7 @@ model.compile(
     metrics=["accuracy"]
 )
 
-log_dir = "logs/optimized/" + datetime.datetime.now().strftime("%Y%m%d-%H%M%S")
+log_dir = "logs/datadiff/" + datetime.datetime.now().strftime("%Y%m%d-%H%M%S")
 os.makedirs(log_dir, exist_ok=True)
 
 callbacks = [

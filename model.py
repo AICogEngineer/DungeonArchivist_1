@@ -16,7 +16,7 @@ def build_model(num_classes, embedding_dim=48):
 
     # Normalize Inputs
     
-    x = layers.Rescaling(1./255)(x)
+    x = layers.Rescaling(1./255)(inputs)
 
     x = layers.Conv2D(32, (3, 3), padding="same", kernel_regularizer=regularizers.l2(1e-4), use_bias=False)(inputs)
     x = layers.BatchNormalization()(x)
@@ -41,7 +41,7 @@ def build_model(num_classes, embedding_dim=48):
     x = layers.Dense(embedding_dim, kernel_regularizer=regularizers.l2(1e-4), use_bias=False, name="embedding")(x)
     x = layers.BatchNormalization()(x)
     x = layers.ReLU()(x)
-    x = layers.Dropout(0.4)(x)
+    x = layers.Dropout(0.2)(x)
 
     outputs = layers.Dense(num_classes, activation="softmax")(x)
 
