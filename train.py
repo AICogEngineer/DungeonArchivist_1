@@ -45,3 +45,12 @@ model.fit(
     epochs=50,
     callbacks=callbacks
 )
+
+
+# SAVE WEIGHTS 
+model.save_weights("sprite_cnn.weights.h5")
+
+# Save class names for later
+with open("classes.txt", "w") as f:
+    for c in class_names:
+        f.write(c + "\n")
