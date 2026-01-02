@@ -1,7 +1,7 @@
 import tensorflow as tf
 from tensorflow import keras
 from keras import layers, Model, Input
-from data import load_dataset
+from model_data_loader import load_dataset
 import datetime, os
 from model import build_model
 
@@ -47,7 +47,8 @@ model.fit(
 )
 
 
-# SAVE WEIGHTS 
+# SAVE MODEL & WEIGHTS
+model.save("image_embedding_model.keras") 
 model.save_weights("sprite_cnn.weights.h5")
 
 # Save class names for later
