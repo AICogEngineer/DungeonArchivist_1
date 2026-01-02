@@ -6,17 +6,17 @@ def build_model(num_classes, embedding_dim=48):
     inputs = Input(shape=(32, 32, 3))
 
 
-    # Data Augmentation
-    x = tf.keras.Sequential([
-        layers.RandomFlip("horizontal"),
-        layers.RandomRotation(0.1),
-        layers.RandomZoom(0.1),
-        layers.RandomTranslation(0.1, 0.1),
-    ], name="data_augmentation")(inputs)
+    # # Data Augmentation
+    # x = tf.keras.Sequential([
+    #     layers.RandomFlip("horizontal"),
+    #     layers.RandomRotation(0.1),
+    #     layers.RandomZoom(0.1),
+    #     layers.RandomTranslation(0.1, 0.1),
+    # ], name="data_augmentation")(inputs)
 
-    # Normalize Inputs
+    # # Normalize Inputs
     
-    x = layers.Rescaling(1./255)(inputs)
+    # x = layers.Rescaling(1./255)(inputs)
 
     x = layers.Conv2D(32, (3, 3), padding="same", kernel_regularizer=regularizers.l2(1e-4), use_bias=False)(inputs)
     x = layers.BatchNormalization()(x)
