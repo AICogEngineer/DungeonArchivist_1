@@ -14,6 +14,9 @@ Dungeon
     Floors
         moved grass to floors
 
+    removed trees
+    
+
 GUI
     moved tavern to shops
 

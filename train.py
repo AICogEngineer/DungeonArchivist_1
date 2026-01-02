@@ -4,6 +4,9 @@ from keras import layers, Model, Input
 from data import load_dataset
 import datetime, os
 from model import build_model
+from archivist import Archivist
+
+archivist = Archivist()
 
 (X_train, y_train), (X_val, y_val), class_names = load_dataset(
     "./Labeled_Dataset",
@@ -44,4 +47,21 @@ model.fit(
     batch_size=32,
     epochs=50,
     callbacks=callbacks
+)
+
+
+archivist.store_embeddings(
+    model,
+    X_train,
+    y_train,
+    class_names,
+    split="train"
+)
+
+archivist.evaluate_knn(
+    model,
+    X_val,
+    y_val,
+    class_names,
+    k=5
 )

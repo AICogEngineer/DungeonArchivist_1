@@ -5,7 +5,7 @@ from keras import layers, Model, Input, regularizers
 def build_model(num_classes, embedding_dim=48):
     inputs = Input(shape=(32, 32, 3))
 
-
+    print(num_classes)
     # # Data Augmentation
     # x = tf.keras.Sequential([
     #     layers.RandomFlip("horizontal"),
