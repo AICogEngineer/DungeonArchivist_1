@@ -1,5 +1,6 @@
 import os
 import numpy as np
+import tensorflow as tf
 from tensorflow.keras.preprocessing.image import load_img, img_to_array
 from sklearn.model_selection import train_test_split
 from collections import defaultdict
@@ -84,3 +85,22 @@ def load_dataset(
 
     return X, y, class_names
 
+def load_unlabeled_dataset(
+    root_dir,
+    image_size=(32, 32),
+    batch_size=32
+):
+    image_paths = []
+    for fname in os.listdir(root_dir):
+        if fname.lower().endswith((".png", ".jpg", ".jpeg")):
+            image_paths.append(os.path.join(root_dir, fname))
+
+    def load_image(path):
+        img = tf.io.read_file(path)
+        img = tf.image.decode_image(img, channels=3)
+        img = tf.image.resize(img, image_size)
+        img = tf.cast(img, tf.float32) / 255.0
+        return img
+
+    X = tf.stack([load_image(p) for p in image_paths])
+    return X.numpy(), image_paths

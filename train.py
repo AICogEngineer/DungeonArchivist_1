@@ -1,7 +1,7 @@
 import tensorflow as tf
 from tensorflow import keras
 from keras import layers, Model, Input
-from data import load_dataset
+from data import load_dataset, load_unlabeled_dataset
 import datetime, os
 from model import build_model
 from archivist import Archivist
@@ -25,7 +25,7 @@ log_dir = "logs/datadiff/" + datetime.datetime.now().strftime("%Y%m%d-%H%M%S")
 os.makedirs(log_dir, exist_ok=True)
 
 callbacks = [
-    tf.keras.callbacks.TensorBoard(log_dir=log_dir),
+    #tf.keras.callbacks.TensorBoard(log_dir=log_dir),
     tf.keras.callbacks.EarlyStopping(
         monitor="val_loss",
         patience=10,
@@ -64,4 +64,17 @@ archivist.evaluate_knn(
     y_val,
     class_names,
     k=5
+)
+
+X_chaos, paths = load_unlabeled_dataset("./chaos_data")
+
+archivist.sort_chaos_dataset(
+    model=model,
+    X=X_chaos,
+    image_paths=paths,
+    class_names=class_names,
+    output_dir="./Sorted_Chaos",
+    k=5,
+    min_knn_confidence=0.6,
+    min_softmax_confidence=0.6
 )

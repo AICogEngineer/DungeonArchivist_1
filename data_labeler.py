@@ -3,7 +3,7 @@ import shutil
 import re
 
 # Paths
-SOURCE_DIR = "Dungeon_Crawler_Data"
+SOURCE_DIR = "Dungeon_Crawler_Dataset"
 DEST_DIR = "Labeled_Dataset"
 
 # Create destination directory if it doesn't exist
