@@ -1,9 +1,14 @@
 import tensorflow as tf
 from tensorflow import keras
 from keras import layers, Model, Input
-from model_data_loader import load_dataset
+from data import load_dataset, load_unlabeled_dataset
+from embedding_utils import images_from_paths
 import datetime, os
 from model import build_model
+from archivist import Archivist
+
+
+archivist = Archivist()
 
 (X_train, y_train), (X_val, y_val), class_names = load_dataset(
     "./Labeled_Dataset",
@@ -13,45 +18,47 @@ from model import build_model
 model = build_model(num_classes=len(class_names))
 
 model.compile(
-    optimizer=tf.keras.optimizers.Adam(learning_rate=1e-3),
+    optimizer=tf.keras.optimizers.Adam(1e-3),
     loss="sparse_categorical_crossentropy",
     metrics=["accuracy"]
 )
-
-log_dir = "logs/datadiff/" + datetime.datetime.now().strftime("%Y%m%d-%H%M%S")
-os.makedirs(log_dir, exist_ok=True)
-
-callbacks = [
-    tf.keras.callbacks.TensorBoard(log_dir=log_dir),
-    tf.keras.callbacks.EarlyStopping(
-        monitor="val_loss",
-        patience=10,
-        restore_best_weights=True
-    ),
-    tf.keras.callbacks.ReduceLROnPlateau(
-        monitor="val_loss",
-        factor=0.5,
-        patience=3,
-        min_lr=1e-5,
-        verbose=1
-    )
-]
 
 model.fit(
     X_train,
     y_train,
     validation_data=(X_val, y_val),
     batch_size=32,
-    epochs=50,
-    callbacks=callbacks
+    epochs=7
+    +5,
+    callbacks=[
+        tf.keras.callbacks.EarlyStopping(
+            monitor="val_loss",
+            patience=8,
+            restore_best_weights=True
+        )
+    ]
 )
 
+model.save("image_embedding_model.keras")
 
-# SAVE MODEL & WEIGHTS
-model.save("image_embedding_model.keras") 
-model.save_weights("sprite_cnn.weights.h5")
+# Store embeddings
+archivist.store_embeddings(
+    model,
+    X_train,
+    y_train,
+    class_names,
+    split="train"
+)
 
-# Save class names for later
-with open("classes.txt", "w") as f:
-    for c in class_names:
-        f.write(c + "\n")
+# Chaos sorting
+X_chaos, chaos_paths = load_unlabeled_dataset("./chaos_data")
+
+archivist.sort_chaos_dataset(
+    model=model,
+    X=X_chaos,
+    image_paths=chaos_paths,
+    class_names=class_names,
+    output_dir="./Sorted_Chaos",
+    k=5
+)
+
