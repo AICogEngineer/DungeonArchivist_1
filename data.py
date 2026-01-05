@@ -86,12 +86,8 @@ def load_dataset(
 
     return X, y, class_names
 
-import os
-import tensorflow as tf
-import numpy as np
 
 IMG_SIZE = 32
-
 
 def load_unlabeled_dataset(root_dir):
     image_paths = []

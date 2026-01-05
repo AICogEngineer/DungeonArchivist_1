@@ -5,18 +5,13 @@ IMG_SIZE = 32
 
 
 def load_and_preprocess_image(x):
-    """
-    x can be:
-    - a string path
-    - a numpy array (already loaded image)
-    """
-
+    
     # Case 1: file path
     if isinstance(x, (str, bytes)):
         img = tf.io.read_file(x)
         img = tf.image.decode_png(img, channels=3)
 
-    # Case 2: numpy array (already loaded)
+    # Case 2: numpy array
     elif isinstance(x, np.ndarray):
         img = tf.convert_to_tensor(x)
 

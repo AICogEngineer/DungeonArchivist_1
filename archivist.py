@@ -39,7 +39,7 @@ class Archivist:
 
         print(f"[Archivist] Stored {len(ids)} embeddings ({split})")
 
-    # ---------- MERGED DECISION LOGIC ----------
+    # DECISION LOGIC 
     def decide_label(
         self,
         knn_labels,
@@ -47,11 +47,11 @@ class Archivist:
         softmax_probs,
         class_names,
         k,
-        dist_threshold=0.30,
+        dist_threshold=0.50,
         margin_threshold=0.10,
-        min_softmax_conf=0.6
+        min_softmax_conf=0.5
     ):
-        # Weighted kNN (your logic)
+        # Weighted kNN 
         scores = {}
         for lbl, d in zip(knn_labels, knn_distances):
             scores[lbl] = scores.get(lbl, 0) + (1 - d)
@@ -63,7 +63,7 @@ class Archivist:
 
         knn_confident = (mean_dist < dist_threshold and margin > margin_threshold)
 
-        # Softmax (their logic)
+        # Softmax 
         sm_idx = int(np.argmax(softmax_probs))
         sm_label = class_names[sm_idx]
         sm_conf = float(softmax_probs[sm_idx])
@@ -77,7 +77,7 @@ class Archivist:
 
         return "uncertain", False, "low_confidence"
 
-    # ---------- CHAOS SORTING ----------
+    # CHAOS SORTING
     def sort_chaos_dataset(
         self,
         model,
