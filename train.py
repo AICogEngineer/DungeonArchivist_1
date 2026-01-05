@@ -9,8 +9,8 @@ from archivist import Archivist
 archivist = Archivist()
 
 (X_train, y_train), (X_val, y_val), class_names = load_dataset(
-    "./Labeled_Dataset",
-    test_split=0.2
+    "./Labeled_Dataset2",
+    #test_split=0.2
 )
 
 model = build_model(num_classes=len(class_names))
@@ -21,8 +21,8 @@ model.compile(
     metrics=["accuracy"]
 )
 
-log_dir = "logs/datadiff/" + datetime.datetime.now().strftime("%Y%m%d-%H%M%S")
-os.makedirs(log_dir, exist_ok=True)
+#log_dir = "logs/datadiff/" + datetime.datetime.now().strftime("%Y%m%d-%H%M%S")
+#os.makedirs(log_dir, exist_ok=True)
 
 callbacks = [
     #tf.keras.callbacks.TensorBoard(log_dir=log_dir),
@@ -66,6 +66,9 @@ archivist.evaluate_knn(
     k=5
 )
 
+
+# Used to sort chaos data, no longer needed
+'''
 X_chaos, paths = load_unlabeled_dataset("./chaos_data")
 
 archivist.sort_chaos_dataset(
@@ -74,6 +77,20 @@ archivist.sort_chaos_dataset(
     image_paths=paths,
     class_names=class_names,
     output_dir="./Sorted_Chaos",
+    k=5,
+    min_knn_confidence=0.6,
+    min_softmax_confidence=0.6
+)
+'''
+
+X_final, paths = load_unlabeled_dataset("./Data_C")
+
+archivist.sort_chaos_dataset(
+    model=model,
+    X=X_final,
+    image_paths=paths,
+    class_names=class_names,
+    output_dir="./Sorted_Final",
     k=5,
     min_knn_confidence=0.6,
     min_softmax_confidence=0.6

@@ -3,8 +3,8 @@ import shutil
 import re
 
 # Paths
-SOURCE_DIR = "Dungeon_Crawler_Dataset"
-DEST_DIR = "Labeled_Dataset"
+SOURCE_DIR = "Dungeon_Crawler_Data"
+DEST_DIR = "Labeled_Dataset2"
 
 # Create destination directory if it doesn't exist
 os.makedirs(DEST_DIR, exist_ok=True)
